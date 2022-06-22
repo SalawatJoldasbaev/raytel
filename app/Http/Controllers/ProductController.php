@@ -42,6 +42,7 @@ class ProductController extends Controller
             $final['data'][] = [
                 'id'=> $product->id,
                 'name'=> $product->name,
+                'images'=> $product->images,
                 'first_price'=> $product->first_price,
                 'second_price'=> $product->second_price,
                 'discount'=> $product->discount,

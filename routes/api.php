@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/favorite/{product}', [FavoriteController::class, 'delete']);
     Route::get('/products', [ProductController::class, 'index']);
 });
+
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
