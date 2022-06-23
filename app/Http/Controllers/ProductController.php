@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Basket;
 use App\Models\Product;
 use App\Models\Favorite;
 use App\Src\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 
 class ProductController extends Controller
 {
@@ -39,6 +41,8 @@ class ProductController extends Controller
         $user = $request->user();
         foreach ($products as $product) {
             $fav = Favorite::where('user_id', $user?->id)->where('product_id', $product->id)->first();
+            $basket = Basket::where('user_id', $user?->id)->where('active', true)->first();
+            $order = Order::where('basket_id', $basket->id)->where('product_id', $product->id)->first();
             $final['data'][] = [
                 'id'=> $product->id,
                 'name'=> $product->name,
@@ -47,6 +51,7 @@ class ProductController extends Controller
                 'second_price'=> $product->second_price,
                 'discount'=> $product->discount,
                 'is_favorite'=> isset($fav) ? true:false,
+                'is_basket'=> isset($order) ? true:false,
                 'description'=> $product->description,
                 'category'=>[
                     'id'=> $product->category->id,

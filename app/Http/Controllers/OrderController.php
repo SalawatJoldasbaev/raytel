@@ -52,6 +52,11 @@ class OrderController extends Controller
     {
         $user = $request->user();
         $basket = Basket::where('user_id', $user->id)->where('active', true)->first();
+        if (!$basket) {
+            return ApiResponse::data([
+                'message'=> 'empty basket'
+            ]);
+        }
         $final = [
             'basket_id'=> $basket->id,
             'price'=> $basket->first_price,
