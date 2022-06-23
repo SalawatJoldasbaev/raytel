@@ -42,7 +42,9 @@ class ProductController extends Controller
         foreach ($products as $product) {
             $fav = Favorite::where('user_id', $user?->id)->where('product_id', $product->id)->first();
             $basket = Basket::where('user_id', $user?->id)->where('active', true)->first();
-            $order = Order::where('basket_id', $basket->id)->where('product_id', $product->id)->first();
+            if ($basket) {
+                $order = Order::where('basket_id', $basket->id)->where('product_id', $product->id)->first();
+            }
             $final['data'][] = [
                 'id'=> $product->id,
                 'name'=> $product->name,
